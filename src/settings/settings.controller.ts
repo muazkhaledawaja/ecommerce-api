@@ -46,7 +46,7 @@ export class SettingsController {
   @Get('/:name/value')
   @ApiOkResponse({
     type: String,
-    description: 'Value of the setting with given name',
+    description: '',
   })
   @ApiNotFoundResponse({ description: 'Setting not found' })
   async getSettingValueByName(@Param('name') name: string): Promise<string> {

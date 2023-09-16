@@ -13,7 +13,7 @@ export const schema = Joi.object({
   UPLOAD_PATH: Joi.string().default('./uploads'),
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test')
-    .default('development'),
-  ADMIN_EMAIL: Joi.string().required(),
-  ADMIN_PASSWORD: Joi.string().required(),
+    .default('production'),
+  ADMIN_EMAIL: Joi.string(),
+  ADMIN_PASSWORD: Joi.string(),
 });

@@ -9,14 +9,14 @@ services:
     volumes:
       - uploads:/usr/src/app/uploads
     environment:
-      POSTGRES_HOST: database
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: ecommerce-platform
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123456789**Mm"
+      POSTGRES_DB: E-commerce
       PORT: 80
       SESSION_SECRET: "${SESSION_SECRET}"
-      ADMIN_EMAIL: "${ADMIN_EMAIL}"
-      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      ADMIN_EMAIL: "test@test.local"
+      ADMIN_PASSWORD: "test1234"
     command: npm run start:prod
     ports:
       - "80:80"
@@ -30,9 +30,9 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: ecommerce-platform
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123456789**Mm"
+      POSTGRES_DB: E-commerce
   redis:
     image: redis:7-alpine
 

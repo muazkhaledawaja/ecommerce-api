@@ -10,7 +10,8 @@ import { CartItem } from './models/cart-item.entity';
 @Injectable()
 export class CartsService {
   constructor(
-    @InjectRepository(Cart) private cartsRepository: Repository<Cart>,
+    @InjectRepository(Cart)
+    private cartsRepository: Repository<Cart>,
     private productsService: ProductsService,
   ) {}
 

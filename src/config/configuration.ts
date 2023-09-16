@@ -1,24 +1,25 @@
+/* eslint-disable prettier/prettier */
 export default () => ({
   port: process.env.PORT,
   postgres: {
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: '123456789**Mm',
+    database: 'E-commerce',
   },
   session: {
-    secret: process.env.SESSION_SECRET,
+    secret: "process.env.SESSION_SECRET",
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
   redis: {
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
+    host: '127.0.0.1',
+    port: 6379,
   },
   uploadPath: process.env.UPLOAD_PATH,
   nodeEnv: process.env.NODE_ENV,
   admin: {
-    email: process.env.ADMIN_EMAIL,
-    password: process.env.ADMIN_PASSWORD,
+    email: 'admin@test.local',
+    password: 'test1234',
   },
 });

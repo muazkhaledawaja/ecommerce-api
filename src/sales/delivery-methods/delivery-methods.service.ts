@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { DeliveryMethod } from './models/delivery-method.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +11,7 @@ export class DeliveryMethodsService {
   constructor(
     @InjectRepository(DeliveryMethod)
     private readonly deliveryMethodsRepository: Repository<DeliveryMethod>,
-  ) {}
+  ) { }
 
   async getMethods(): Promise<DeliveryMethod[]> {
     return this.deliveryMethodsRepository.find();
