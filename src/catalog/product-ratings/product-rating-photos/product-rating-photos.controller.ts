@@ -41,7 +41,7 @@ import { fileBodySchema } from '../../../local-files/models/file-body.schema';
 @Features('Product ratings', 'Product rating photos')
 @Controller('products/:productId/ratings/:id/photos')
 export class ProductRatingPhotosController {
-  constructor(private productRatingPhotosService: ProductRatingPhotosService) {}
+  constructor(private productRatingPhotosService: ProductRatingPhotosService) { }
 
   @Get(':photoId')
   @ApiOkResponse({

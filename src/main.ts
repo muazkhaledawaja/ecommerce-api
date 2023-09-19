@@ -23,7 +23,6 @@ async function bootstrap() {
   await RedocModule.setup('docs', app, document, {});
 
   const port = configService.get('port');
-  console.log(port);
 
   await app.listen(port)
 
