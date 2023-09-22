@@ -9,8 +9,7 @@ import { ConfigService } from '@nestjs/config';
       provide: REDIS_CLIENT,
       useFactory: (configService: ConfigService) =>
         Redis.createClient({
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
+          url: 'rediss://default:AVNS_75aohp0WVCxVPunShux@db-redis-nyc1-77005-do-user-10877346-0.b.db.ondigitalocean.com:25061',
         }),
       inject: [ConfigService],
     },

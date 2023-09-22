@@ -26,7 +26,7 @@ import {
 @ApiTags('payment methods')
 @Controller('payment-methods')
 export class PaymentMethodsController {
-  constructor(private readonly paymentMethodsService: PaymentMethodsService) {}
+  constructor(private readonly paymentMethodsService: PaymentMethodsService) { }
 
   @Get()
   @ApiOkResponse({

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Inject,
   MiddlewareConsumer,
@@ -97,6 +98,7 @@ export class AppModule {
 
   configure(consumer: MiddlewareConsumer) {
     const RedisStore = createRedisStore(session);
+    
     consumer
       .apply(
         session({
@@ -112,5 +114,8 @@ export class AppModule {
         passport.session(),
       )
       .forRoutes('*');
+
+
   }
+  
 }

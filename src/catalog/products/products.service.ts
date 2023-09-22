@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './models/product.entity';
@@ -107,8 +108,16 @@ export class ProductsService {
     id: number,
     attributes: AttributeDto[],
   ): Promise<Product> {
+    if (attributes === undefined) {
+      throw new Error('attributes is undefined');
+    }
+    if (!Array.isArray(attributes)) {
+      throw new Error('attributes must be an array');
+    }
+  
     const product = await this.getProduct(id, true);
     const attributesToSave = [];
+  
     for (const attribute of attributes) {
       const attributeType = await this.attributeTypesService.getAttributeType(
         attribute.typeId,
@@ -122,7 +131,9 @@ export class ProductsService {
       newAttribute.value = attribute.value;
       attributesToSave.push(newAttribute);
     }
+  
     product.attributes = await this.attributesRepository.save(attributesToSave);
     return this.productsRepository.save(product);
   }
+  
 }
