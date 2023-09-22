@@ -38,7 +38,7 @@ import { CartsModule } from './carts/carts.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         type: 'postgres',
         host: 'localhost',
         port: 5432,

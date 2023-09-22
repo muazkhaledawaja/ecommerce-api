@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './models/category.entity';
@@ -46,6 +48,20 @@ export class CategoriesService {
     }
     return category;
   }
+
+  async getCategoryChilds(id: number): Promise<Category[]> {
+    const category = await this.getCategory(id, true, false);
+    return category.childCategories;
+  }
+  
+  async createCategoryChild(categoryData: CategoryCreateDto, id:number): Promise<Category> {
+    const chailCategory = new Category();
+    Object.assign(chailCategory, categoryData);
+    chailCategory.parentCategory = await this.getCategory(id, false);
+    return this.categoriesRepository.save(chailCategory);
+   
+  }
+
 
   async getCategoryGroups(): Promise<CategoryGroup[]> {
     return await this.categoryGroupsRepository.find({

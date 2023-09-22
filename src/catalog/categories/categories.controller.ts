@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -32,7 +34,7 @@ import { ReqUser } from '../../auth/decorators/user.decorator';
 @ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(private categoriesService: CategoriesService) { }
 
   @Get()
   @ApiOkResponse({ type: [Category], description: 'List of all categories' })
@@ -54,6 +56,27 @@ export class CategoriesController {
   @ApiOkResponse({ type: Category, description: 'Category with given id' })
   async getCategory(@Param('id', ParseIntPipe) id: number): Promise<Category> {
     return await this.categoriesService.getCategory(id);
+  }
+
+  @Get('/:id/childs')
+  @ApiNotFoundResponse({ description: 'Category not found' })
+  @ApiOkResponse({ type: [Category], description: 'Category childs' })
+  async getCategoryChilds(@Param('id', ParseIntPipe) id: number): Promise<Category[]> {
+    return await this.categoriesService.getCategoryChilds(id);
+  }
+ 
+  @Post('/:id/childs')
+  @Roles(Role.Admin, Role.Manager)
+  @ApiUnauthorizedResponse({ description: 'User not logged in' })
+  @ApiForbiddenResponse({ description: 'User not authorized' })
+  @ApiNotFoundResponse({ description: 'Category not found' })
+  @ApiCreatedResponse({ type: Category, description: 'Category child created' })
+  @ApiBadRequestResponse({ description: 'Invalid category data' })
+  async createCategoryChild(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() category: CategoryCreateDto,
+  ): Promise<Category> {
+    return await this.categoriesService.createCategoryChild(category, id);
   }
 
   @Post()
@@ -121,12 +144,14 @@ export class CategoriesController {
       required: ['productId'],
     },
   })
+
   async addCategoryProduct(
     @Param('id', ParseIntPipe) id: number,
     @Body('productId') productId: number,
   ): Promise<Product> {
     return await this.categoriesService.addCategoryProduct(id, productId);
   }
+
 
   @Delete('/:id/products/:productId')
   @Roles(Role.Admin, Role.Manager)

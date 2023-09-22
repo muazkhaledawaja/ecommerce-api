@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Column,
   Entity,
@@ -9,6 +10,7 @@ import {
 } from 'typeorm';
 import { Product } from '../../products/models/product.entity';
 import { CategoryGroup } from './category-group.entity';
+import { CategoryPhoto } from '../categories-photos/models/categories-photos.entity';
 
 @Entity('categories')
 export class Category {
@@ -35,6 +37,19 @@ export class Category {
   })
   childCategories: Category[];
 
+
+  @OneToMany(() => CategoryPhoto, (photo) => photo.category, {
+    eager: true,
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  photos: CategoryPhoto[];
+
+  
+  @Column({ default: '' })
+  photosOrder: string;
+
+ 
   @ManyToMany(
     () => CategoryGroup,
     (categoryGroup) => categoryGroup.categories,
