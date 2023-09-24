@@ -32,20 +32,20 @@ import { CartsModule } from './carts/carts.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      ignoreEnvFile: true,
+      ignoreEnvFile: false,
       isGlobal: true,
       validationSchema: schema,
       load: [configuration],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: () => ({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '123456789**Mm',
-        database: 'E-commerce',
+        host: configService.get<string>('postgres.host'),
+        port: configService.get<number>('postgres.port'),
+        username: configService.get<string>('postgres.username'),
+        password: configService.get<string>('postgres.password'),
+        database: configService.get<string>('postgres.database'),
         entities: [],
         synchronize: true,
         autoLoadEntities: true,
