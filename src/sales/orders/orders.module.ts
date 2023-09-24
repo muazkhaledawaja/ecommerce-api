@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
@@ -13,6 +14,9 @@ import { DeliveryMethodsModule } from '../delivery-methods/delivery-methods.modu
 import { PaymentMethodsModule } from '../payment-methods/payment-methods.module';
 import { OrdersExporter } from './orders.exporter';
 import { OrdersImporter } from './orders.importer';
+import { QrCodeModule } from '../qr-code/qr-code.module';
+  import { QrCodeService } from '../qr-code/qr-code.service';
+
 
 @Module({
   imports: [
@@ -21,8 +25,10 @@ import { OrdersImporter } from './orders.importer';
     CatalogModule,
     DeliveryMethodsModule,
     PaymentMethodsModule,
+ 
+ 
   ],
-  providers: [OrdersService, OrdersSubscriber, OrdersExporter, OrdersImporter],
+  providers: [OrdersService, OrdersSubscriber, OrdersExporter, OrdersImporter,QrCodeService],
   controllers: [OrdersController],
   exports: [OrdersService, OrdersExporter, OrdersImporter],
 })

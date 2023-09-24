@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Column,
   CreateDateColumn,
@@ -79,4 +80,8 @@ export class Order {
     nullable: true,
   })
   return?: Return;
+
+  @Column({ nullable: true })
+  qrCodeData?: string;
+
 }

@@ -12,7 +12,6 @@ async function bootstrap() {
   if (configService.get('nodeEnv') === 'development') {
     app.enableCors({ origin: true, credentials: true });
   }
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('E-commerce platform API')
     .setVersion(process.env.npm_package_version ?? '1.0.0')

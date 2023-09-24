@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+/* eslint-disable max-lines */
+/* eslint-disable prettier/prettier */
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Order } from './models/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +16,8 @@ import { OrderPayment } from './models/order-payment.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { Role } from '../../users/models/role.enum';
 import { OrderItemDto } from './dto/order-item.dto';
+import { QrCodeService } from '../qr-code/qr-code.service';
+import { OrderStatus } from './models/order-status.enum';
 
 @Injectable()
 export class OrdersService {
@@ -24,6 +28,7 @@ export class OrdersService {
     private readonly productsService: ProductsService,
     private readonly deliveryMethodsService: DeliveryMethodsService,
     private readonly paymentMethodsService: PaymentMethodsService,
+    private readonly qrCodeService: QrCodeService,
   ) {}
 
   async getOrders(withUser = false, withProducts = false): Promise<Order[]> {
@@ -107,6 +112,11 @@ export class OrdersService {
     Object.assign(payment, orderData.payment);
     order.payment = payment;
     order.payment.method = paymentMethod;
+
+    const qrCodeImage = await this.qrCodeService.generateQrCode(order);
+
+    order.qrCodeData = qrCodeImage;
+
     return this.ordersRepository.save(order, { listeners: !ignoreSubscribers });
   }
 
@@ -153,6 +163,17 @@ export class OrdersService {
     const { delivery, payment, items, ...toAssign } = orderData;
     Object.assign(order, toAssign);
     return this.ordersRepository.save(order, { listeners: !ignoreSubscribers });
+  } 
+  
+  async markOrderAsDelivered(orderId: number): Promise<Order> {
+    const order = await this.getOrder(orderId);
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+
+    order.status = OrderStatus.Delivered;
+
+    return this.ordersRepository.save(order);
   }
 
   async deleteOrder(id: number): Promise<void> {
