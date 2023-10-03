@@ -12,14 +12,21 @@ const sharp = require('sharp');
 
 @Injectable()
 export class QrCodeService {
+
   async generateQrCode(order: Order): Promise<string> {
-    const qrCodeData = `OrderID: ${order.id} Full Name: ${order.fullName} Contact Email: ${order.contactEmail} Contact Phone: ${order.contactPhone} Message: ${order.message}`
+    const qrCodeData = `
+     OrderID: ${order.id}
+     Full Name: ${order.fullName} 
+     Contact Email: ${order.contactEmail} 
+     Contact Phone: ${order.contactPhone}
+     Message: ${order.message}
+      `
     const qrCodeImage = await QRCode.toDataURL(qrCodeData);
     return qrCodeImage;
   }
 
 
-  async  generateQrCodeImage(data: string): Promise<Buffer> {
+  async generateQrCodeImage(data: string): Promise<Buffer> {
 
     const qrCodeBuffer = await QRCode.toBuffer(data);
     const imageBuffer = await sharp(qrCodeBuffer).toBuffer();

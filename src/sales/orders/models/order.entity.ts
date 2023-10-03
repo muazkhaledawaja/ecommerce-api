@@ -82,6 +82,6 @@ export class Order {
   return?: Return;
 
   @Column({ nullable: true })
-  qrCodeData?: string;
+  qrCodeData?: string ;
 
 }

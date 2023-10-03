@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -7,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+ 
 } from '@nestjs/common';
 import { Role } from '../../users/models/role.enum';
 import { OrdersService } from './orders.service';
@@ -38,6 +40,7 @@ export class OrdersController {
   async createOrder(
     @ReqUser() user: User | null,
     @Body() body: OrderCreateDto,
+   
   ): Promise<Order> {
     return await this.ordersService.createOrder(user?.id ?? null, body);
   }

@@ -27,6 +27,7 @@ export class OrdersImporter implements Importer {
         user.id ?? null,
         createDto,
         true,
+        
       );
       await this.ordersService.updateOrder(newId, { status }, true);
       idMap[order.id] = newId;

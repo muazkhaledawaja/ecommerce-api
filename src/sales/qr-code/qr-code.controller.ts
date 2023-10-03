@@ -5,6 +5,7 @@ import { Body, Controller, Get, Param, Res, Post } from '@nestjs/common';
 import { Response } from 'express';
 import { QrCodeService } from './qr-code.service';
 import { OrdersService } from '../orders/orders.service';
+import * as PDFDocument from 'pdfkit'; 
 import {
   ApiBadRequestResponse,
   ApiForbiddenResponse,
@@ -16,8 +17,7 @@ import {
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/users/models/role.enum';
 import { Order } from '../orders/models/order.entity';
-import { OrderStatus } from '../orders/models/order-status.enum';
-import { log } from 'console';
+ 
 
 @Controller('qr-code')
 export class QrCodeController {
@@ -26,7 +26,7 @@ export class QrCodeController {
     private readonly ordersService: OrdersService,
   ) { }
 
-  @Get(':orderId')
+  @Get(':orderId/pdf')  
   @Roles(Role.Admin)
   @ApiOkResponse({
     type: Order,
@@ -35,7 +35,7 @@ export class QrCodeController {
   @ApiNotFoundResponse({ description: 'Order not found' })
   @ApiUnauthorizedResponse({ description: 'User not logged in' })
   @ApiForbiddenResponse({ description: 'User not authorized' })
-  async generateQrCode(@Param('orderId') orderId: number, @Res() res: Response) {
+  async generateQrCodePDF(@Param('orderId') orderId: number, @Res() res: Response) {
     try {
       const order = await this.ordersService.getOrder(orderId);
       if (!order) {
@@ -43,20 +43,20 @@ export class QrCodeController {
         return;
       }
       const qrCodeImage = await this.qrCodeService.generateQrCode(order);
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>QR Code</title>
-          </head>
-          <body>
-            <h1>QR Code for Order ${order.id}</h1>
-            <img src="${qrCodeImage}" alt="QR Code for Order ${order.id}">
-          </body>
-        </html>
-      `;
-      res.setHeader('Content-Type', 'text/html');
-      res.send(htmlContent);
+
+      // Create a PDF document
+      const pdfDoc = new PDFDocument();
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename=order_${order.id}.pdf`);
+      pdfDoc.pipe(res);
+
+      // Add content to the PDF
+      pdfDoc.text(`QR Code for Order ${order.id} `, 50, 50);
+ 
+      pdfDoc.image(qrCodeImage, 50, 80, { width: 200 });
+
+      // Finalize the PDF and send it to the response
+      pdfDoc.end();
     } catch (error) {
       res.status(500).send('Internal Server Error');
     }

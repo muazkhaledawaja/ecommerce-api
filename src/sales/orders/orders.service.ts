@@ -18,7 +18,7 @@ import { Role } from '../../users/models/role.enum';
 import { OrderItemDto } from './dto/order-item.dto';
 import { QrCodeService } from '../qr-code/qr-code.service';
 import { OrderStatus } from './models/order-status.enum';
-
+ 
 @Injectable()
 export class OrdersService {
   constructor(
@@ -88,6 +88,7 @@ export class OrdersService {
     userId: number | null,
     orderData: OrderCreateDto,
     ignoreSubscribers = false,
+ 
   ): Promise<Order> {
     const order = new Order();
     if (userId) {
@@ -113,7 +114,7 @@ export class OrdersService {
     order.payment = payment;
     order.payment.method = paymentMethod;
 
-    const qrCodeImage = await this.qrCodeService.generateQrCode(order);
+    const qrCodeImage = await this.qrCodeService.generateQrCode(order);  
 
     order.qrCodeData = qrCodeImage;
 
